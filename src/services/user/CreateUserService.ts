@@ -15,7 +15,7 @@ class CreateUserService {
       throw new Error('Email incorreto')
     }
 
-    // Verificar se esse email ja está cadastrado na paltaforma
+    // Verificar se esse email ja está cadastrado na plataforma
     const userAlreadyExists = await prismaClient.user.findFirst({
       where:{
         email: email
