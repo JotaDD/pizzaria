@@ -12,7 +12,6 @@ class CreateOrderController {
     table,
     name
    })
-   console.log(order);
    
    return res.json(order)
   }
