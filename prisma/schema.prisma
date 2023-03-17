@@ -10,13 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 // criar uma migration: yarn prisma migrate dev
 model User {
   id String @id @default(uuid())
   name String
   email String
   password String
-  create_at DateTime? @default(now())
+  created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
   @@map("users")
@@ -26,10 +27,10 @@ model Category {
   id String @id @default(uuid())
   name String
 
-  create_at DateTime? @default(now())
+  created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
-  @@map("caregories")  
+  @@map("categories")  
   products Product[]
 }
 
@@ -40,7 +41,7 @@ model Product {
   description String
   banner String
 
-  create_at DateTime? @default(now())
+  created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
   category Category @relation(fields: [category_id], references: [id])
@@ -57,7 +58,7 @@ model Order {
   draft Boolean @default(true)
   name String?
 
-  create_at DateTime? @default(now())
+  created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
   @@map("orders")
@@ -69,7 +70,7 @@ model Item {
   id String @id @default(uuid())
   amount Int
 
-  create_at DateTime? @default(now())
+  created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
   order Order @relation(fields: [order_id], references: [id])
