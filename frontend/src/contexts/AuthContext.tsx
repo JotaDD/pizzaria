@@ -28,8 +28,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 
 
-  async function signIn() {
-    alert("Clicou no login")
+  async function signIn({email, password}:SignInProps) {  
+    
   }
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>

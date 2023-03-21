@@ -6,7 +6,7 @@ import styles from '../styles/home.module.scss'
 import logoImg from '../../public/logo.svg'
 
 import { AuthContext } from "../contexts/AuthContext"
-import { useContext, FormEvent } from 'react'
+import { useContext, FormEvent, useState } from 'react'
 
 import { Input } from "../components/ui/Input"
 import Button from "../components/ui/Button"
@@ -14,18 +14,29 @@ import Button from "../components/ui/Button"
 
 export default function Home() {
   const { signIn } = useContext(AuthContext)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
 
-  const handleLogin = async (event: FormEvent) =>{
+
+  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value)
+  }
+  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value)
+  }
+
+  const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
 
     let data = {
-      email: "teste@teste.com",
-      password:"123123"
+      email,
+      password
     }
 
     await signIn(data)
-
   }
+
   return (
     <>
       <Head>
@@ -36,10 +47,8 @@ export default function Home() {
 
         <div className={styles.login}>
           <form onSubmit={handleLogin}>
-            <Input placeholder="Digite seu email" type="text" />
-
-            <Input placeholder="Sua Senha" type="password" />
-
+            <Input value={email} onChange={handleEmail} placeholder="Digite seu email" type="text" />
+            <Input value={password} onChange={handlePassword} placeholder="Sua Senha" type="password" />
             <Button type="submit" loading={false}>Acessar</Button>
           </form>
           <Link className={styles.text} href="/signup">
