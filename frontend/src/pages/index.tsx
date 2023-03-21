@@ -29,12 +29,20 @@ export default function Home() {
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
 
+    if(email === '' || password ===''){
+      alert("PREENCHA OS DADOS")
+      return
+    }
+    
+    setLoading(true)
+
     let data = {
       email,
       password
     }
 
     await signIn(data)
+    setLoading(false)
   }
 
   return (
@@ -49,7 +57,7 @@ export default function Home() {
           <form onSubmit={handleLogin}>
             <Input value={email} onChange={handleEmail} placeholder="Digite seu email" type="text" />
             <Input value={password} onChange={handlePassword} placeholder="Sua Senha" type="password" />
-            <Button type="submit" loading={false}>Acessar</Button>
+            <Button type="submit" loading={loading}>Acessar</Button>
           </form>
           <Link className={styles.text} href="/signup">
             Não possui uma conta? Cadastre-se
