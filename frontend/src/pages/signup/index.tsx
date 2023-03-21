@@ -6,9 +6,13 @@ import logoImg from '../../../public/logo.svg'
 import Link from "next/link"
 import Button from "../../components/ui/Button"
 import { Input } from "../../components/ui/Input"
-import { FormEvent, useState } from "react"
+import { FormEvent, useState, useContext } from "react"
+
+import { AuthContext } from '../../contexts/AuthContext'
 
 export default function SignUp() {
+  const { signUp } = useContext(AuthContext)
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -25,7 +29,15 @@ export default function SignUp() {
     }
     setLoading(true)
 
+    let data = {
+      name,
+      email,
+      password
+    }
 
+    await signUp(data)
+
+    setLoading(false)
   }
   const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value)
