@@ -13,6 +13,7 @@ import Button from "../components/ui/Button"
 
 import { toast } from 'react-toastify'
 
+import { canSSRGuest } from '../utils/canSSRGuest'
 
 
 export default function Home() {
@@ -32,11 +33,11 @@ export default function Home() {
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
 
-    if(email === '' || password ===''){
+    if (email === '' || password === '') {
       toast.warning("Preencha todos os campos")
       return
     }
-    
+
     setLoading(true)
 
     let data = {
@@ -70,3 +71,10 @@ export default function Home() {
     </>
   )
 }
+
+
+export const getServerSideProps = canSSRGuest(async (ctx) => {
+  return {
+    props: {}
+  }
+})
