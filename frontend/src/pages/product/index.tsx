@@ -19,22 +19,22 @@ export default function Product() {
   const [description, setDescription] = useState('')
 
 
-  const handleFile = (event:React.ChangeEvent<HTMLInputElement>)=>{
-    
-    if(!event.target.files){
+  const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    if (!event.target.files) {
       return
     }
 
     const image = event.target.files[0]
 
-    if(!image){
+    if (!image) {
       return
     }
-    if (image.type === 'image/jpeg' || image.type === 'image/png' ){
+    if (image.type === 'image/jpeg' || image.type === 'image/png') {
       setImageAvatar(image)
       setAvatarURL(URL.createObjectURL(image))
     }
-    
+
   }
 
   const handleRegister = (event: FormEvent) => {
@@ -42,13 +42,7 @@ export default function Product() {
       return
     }
     const apiClient = setupAPIClient()
-    // await apiClient.post("/product",{
-    //   banner: banner,
-    //   name: name,
-    //   price: price,
-    //   description: description,
-
-    // })
+  
   }
   return (
     <>
@@ -59,7 +53,7 @@ export default function Product() {
         <Header />
 
         <main className={styles.container}>
-          <h1 className={styles.name}>Página novo produto</h1>
+          <h1 className={styles.name}>Novo produto</h1>
 
           <form className={styles.form}>
 
@@ -72,11 +66,11 @@ export default function Product() {
               />
               {avatarURL && (
                 <Image
-                className={styles.preview}
-                src={avatarURL}
-                alt="Foto do produto"
-                width={250}
-                height={250} />
+                  className={styles.preview}
+                  src={avatarURL}
+                  alt="Foto do produto"
+                  width={250}
+                  height={250} />
               )}
 
 
