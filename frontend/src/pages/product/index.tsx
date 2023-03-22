@@ -26,7 +26,6 @@ export default function Product({ categoryList }: CategoryProps) {
   const [selectedCategory, setSelectedCategory] = useState('')
 
 
-  const [banner, setBanner] = useState(null)
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
   const [description, setDescription] = useState('')
@@ -55,7 +54,38 @@ export default function Product({ categoryList }: CategoryProps) {
     setSelectedCategory(event.target.value)
   }
 
-  const handleRegister = (event: FormEvent) => {
+  const handleRegister = async (event: FormEvent) => {
+    event.preventDefault()
+
+    try {
+      const data = new FormData()
+
+      if (name === '' || price === '' || description === '' || imageAvatar === 'null') {
+        toast.error('Preencha todos os campos!')
+        return
+      }
+      data.append('name', name)
+      data.append('price', price)
+      data.append('description', description)
+      data.append('category_id', categories[selectedCategory].id)
+      data.append('file', imageAvatar)
+
+      const apiClient = setupAPIClient()
+      await apiClient.post("/product", data)
+
+      toast.success("Produto cadastrado com sucesso!")
+
+    } catch (error) {
+      console.log(error)
+      toast.error("Ops, erro ao cadastrar o produto")
+
+    }
+    
+    setName('')
+    setPrice('')
+    setDescription('')
+    setImageAvatar(null)
+    setAvatarURL('')
 
   }
   return (
@@ -69,14 +99,14 @@ export default function Product({ categoryList }: CategoryProps) {
         <main className={styles.container}>
           <h1 className={styles.name}>Novo produto</h1>
 
-          <form className={styles.form}>
+          <form onSubmit={handleRegister} className={styles.form}>
 
             <label className={styles.labelAvatar}>
               <span><FiUpload size={30} color="#FFF" /></span>
               <input
-                value={banner}
+                type="file"
                 accept="image/png, image/jpeg"
-                onChange={handleFile} type="file"
+                onChange={handleFile}
               />
               {avatarURL && (
                 <Image
@@ -86,10 +116,7 @@ export default function Product({ categoryList }: CategoryProps) {
                   width={250}
                   height={250} />
               )}
-
-
             </label>
-
 
             <select onChange={handleChangeCategory} value={selectedCategory} >
               {categories.map((category, index) => (
@@ -98,6 +125,7 @@ export default function Product({ categoryList }: CategoryProps) {
                 </option>
               ))}
             </select>
+
             <input value={name}
               onChange={(event) => setName(event.target.value)} type="text"
               placeholder='Nome do item'
@@ -112,6 +140,8 @@ export default function Product({ categoryList }: CategoryProps) {
             />
 
             <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
               placeholder='Descreva seu produto'
               className={styles.input}
             />
