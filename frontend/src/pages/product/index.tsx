@@ -9,11 +9,24 @@ import { canSSRAuth } from '../../utils/canSSRAuth'
 import { FiUpload } from 'react-icons/fi'
 import Image from 'next/image'
 
-export default function Product() {
+type ItemProps = {
+  id: string
+  name: string
+}
+
+interface CategoryProps {
+  categoryList: ItemProps[]
+}
+
+export default function Product({ categoryList }: CategoryProps) {
   const [avatarURL, setAvatarURL] = useState('')
   const [imageAvatar, setImageAvatar] = useState(null)
+
+  const [categories, setCategories] = useState(categoryList || [])
+  const [selectedCategory, setSelectedCategory] = useState('')
+
+
   const [banner, setBanner] = useState(null)
-  const [category, setCategory] = useState('')
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
   const [description, setDescription] = useState('')
@@ -36,13 +49,14 @@ export default function Product() {
     }
 
   }
+  // Quando você seleciona uma nova categoria na lista
+  const handleChangeCategory = (event) => {
+    // console.log('Categoria Selecionada: ', categories[event.target.value])
+    setSelectedCategory(event.target.value)
+  }
 
   const handleRegister = (event: FormEvent) => {
-    if (banner === null || category === '' || name === '' || price === '' || description === '') {
-      return
-    }
-    const apiClient = setupAPIClient()
-  
+
   }
   return (
     <>
@@ -77,9 +91,12 @@ export default function Product() {
             </label>
 
 
-            <select>
-              <option>Pizzas</option>
-              <option>Bebidas</option>
+            <select onChange={handleChangeCategory} value={selectedCategory} >
+              {categories.map((category, index) => (
+                <option key={category.id} value={index}>
+                  {category.name}
+                </option>
+              ))}
             </select>
             <input value={name}
               onChange={(event) => setName(event.target.value)} type="text"
@@ -110,7 +127,14 @@ export default function Product() {
 }
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
+  const apiClient = setupAPIClient(ctx)
+
+  const response = await apiClient.get("/category")
+  console.log(response.data)
+
   return {
-    props: {}
+    props: {
+      categoryList: response.data
+    }
   }
 })
