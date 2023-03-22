@@ -5,7 +5,7 @@ import logoImg from '../../../public/logo.svg'
 
 import Link from "next/link"
 import Button from "../../components/ui/Button"
-import { Input } from "../../components/ui/Input"
+import { Input } from "../../components/ui/input"
 import { FormEvent, useState, useContext } from "react"
 
 import {toast} from 'react-toastify'

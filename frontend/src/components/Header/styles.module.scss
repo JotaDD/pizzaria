@@ -11,10 +11,6 @@
 	justify-content: space-between;
 	align-items: center;
 
-  h1{
-    color: var(--white);
-  }
-
 	.image {
 		cursor: pointer;
 	}
@@ -40,15 +36,14 @@
 			color: var(--red-900);
 		}
 	}
-  button {
-    margin-left: 2rem;
-    background: transparent;
-    border: 0;
-    transition: transform 0.8s;
+	button {
+		margin-left: 2rem;
+		background: transparent;
+		border: 0;
+		transition: transform 0.8s;
 
-    &:hover {
-      transform: scale(1.2)
-    }
-  }
+		&:hover {
+			transform: scale(1.2);
+		}
+	}
 }
-

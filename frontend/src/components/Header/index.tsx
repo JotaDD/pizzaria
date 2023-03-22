@@ -14,7 +14,6 @@ export function Header() {
         <Link href="/dashboard">
           <Image className={styles.image} src="./logo.svg" width={180} height={180} alt="Corleone Pizza" />
         </Link>
-        <h1> Bem vindo {user?.name}</h1>
         <nav className={styles.menuNav}>
           <Link className={styles.category} href="/category">Categoria</Link>
           <Link className={styles.product} href="/product">Cardápio</Link>
