@@ -5,6 +5,8 @@ import { Header } from '../../components/Header'
 import { setupAPIClient } from '../../services/api'
 import { FiRefreshCcw } from 'react-icons/fi'
 import { useState } from 'react'
+import Modal from 'react-modal'
+import { ModalOrder } from '../../components/ModalOrder'
 
 
 type OrderProps = {
@@ -13,6 +15,25 @@ type OrderProps = {
   status: boolean
   draft: boolean
   name: string | null
+}
+export type OrderItemProps = {
+  id: string
+  amount: number
+  order_id: string
+  product_id: string
+  product: {
+    id: string
+    name: string
+    description: string
+    price: string
+    banner: string
+  }
+  order: {
+    id: string
+    table: string | number
+    status: boolean
+    name: string | null
+  }
 }
 
 interface HomeProps {
@@ -23,9 +44,26 @@ export default function Dashboard({ orders }: HomeProps) {
 
   const [orderList, setOrderList] = useState(orders || [])
 
-  const handleOpenModalView = (id: string)=>{
-    alert("ID Clicado: " + id)
+  const [modalItem, setModalItem] = useState<OrderItemProps[]>()
+  const [modalVisible, setModalVisible] = useState(false)
+
+  const handleCloseModal = () => {
+    setModalVisible(false)
   }
+
+  const handleOpenModalView = async (id: string) => {
+    const apiClient = setupAPIClient()
+
+    const response = await apiClient.get("/order/detail", {
+      params: {
+        order_id: id
+      }
+    })
+    setModalItem(response.data)
+    setModalVisible(true)
+  }
+
+  Modal.setAppElement('#__next')
 
   return (
     <>
@@ -45,7 +83,7 @@ export default function Dashboard({ orders }: HomeProps) {
           <article className={styles.listOrders}>
             {orderList.map((item) => (
               <section key={item.id} className={styles.orderItem} >
-                <button onClick={()=> handleOpenModalView(item.id)}>
+                <button onClick={() => handleOpenModalView(item.id)}>
                   <div className={styles.tag}></div>
                   <span >Mesa {item.table}</span>
                 </button>
@@ -54,6 +92,10 @@ export default function Dashboard({ orders }: HomeProps) {
           </article>
 
         </main>
+
+        {modalVisible && (
+          <ModalOrder/>
+        )}
 
       </div>
     </>
