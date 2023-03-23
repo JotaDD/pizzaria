@@ -4,14 +4,16 @@ import Modal from 'react-modal'
 import { FiX } from 'react-icons/fi'
 
 import { OrderItemProps } from '../../pages/dashboard'
+import { setupAPIClient } from '../../services/api'
 
 interface ModalOrderProps {
   isOpen: boolean
   onRequestClose: () => void
   order: OrderItemProps[]
+  handleFinishOrder: (id: string) => void
 }
 
-export function ModalOrder({ isOpen, onRequestClose, order }: ModalOrderProps) {
+export function ModalOrder({ isOpen, onRequestClose, order, handleFinishOrder }: ModalOrderProps) {
   const customStyles = {
     content: {
       top: '50%',
@@ -23,6 +25,9 @@ export function ModalOrder({ isOpen, onRequestClose, order }: ModalOrderProps) {
       backgroundColor: '#1D1D2E'
     }
   }
+
+
+
 
   return (
     <Modal
@@ -54,7 +59,7 @@ export function ModalOrder({ isOpen, onRequestClose, order }: ModalOrderProps) {
           </section>
         ))}
 
-        <button onClick={() => { }} className={styles.buttonOrder}>Concluir Pedido</button>
+        <button onClick={()=>handleFinishOrder(order[0].order_id)} className={styles.buttonOrder}>Concluir Pedido</button>
 
 
 

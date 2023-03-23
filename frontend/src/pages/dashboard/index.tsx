@@ -51,6 +51,18 @@ export default function Dashboard({ orders }: HomeProps) {
     setModalVisible(false)
   }
 
+  const handleFinishItem = async (id: string) => {
+    const apiClient = setupAPIClient()
+    await apiClient.put("/order/finish", {
+      order_id: id
+    })
+
+    const response = await apiClient.get("/orders")
+    setOrderList(response.data)
+
+    setModalVisible(false)
+  }
+
   const handleOpenModalView = async (id: string) => {
     const apiClient = setupAPIClient()
 
@@ -81,14 +93,21 @@ export default function Dashboard({ orders }: HomeProps) {
           </div>
 
           <article className={styles.listOrders}>
+            {orderList.length === 0 && (
+              <span className={styles.emptyList}>
+                Não há pedidos
+              </span>
+            )}
             {orderList.map((item) => (
               <section key={item.id} className={styles.orderItem} >
                 <button onClick={() => handleOpenModalView(item.id)}>
                   <div className={styles.tag}></div>
-                  <span >Mesa {item.table}</span>
+                    <span >Mesa {item.table}</span>
                 </button>
               </section>
-            ))}
+            ))
+            }
+
           </article>
 
         </main>
@@ -98,6 +117,7 @@ export default function Dashboard({ orders }: HomeProps) {
             isOpen={modalVisible}
             onRequestClose={handleCloseModal}
             order={modalItem}
+            handleFinishOrder={handleFinishItem}
           />
         )}
 
