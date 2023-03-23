@@ -44,16 +44,20 @@ export function ModalOrder({ isOpen, onRequestClose, order }: ModalOrderProps) {
         <h2>Detalhes do pedido</h2>
         <span className={styles.table}>
           Mesa: <strong>{order[0].order.table}</strong>
-          {order.map((item) => (
-            <section key={item.id} className={styles.containerItem} >
-              <span>{item.amount} - <strong>{item.product.name}</strong></span>
-              <span className={styles.description} >{item.product.description}</span>
-            </section>
-          ))}
-
-
-
         </span>
+        {order.map((item) => (
+          <section key={item.id} className={styles.containerItem} >
+            <span>{item.amount} - <strong>{item.product.name}</strong></span>
+            <span className={styles.description}>
+              {item.product.description}
+            </span>
+          </section>
+        ))}
+
+        <button onClick={() => { }} className={styles.buttonOrder}>Concluir Pedido</button>
+
+
+
 
       </div>
 
