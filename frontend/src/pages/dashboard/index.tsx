@@ -4,7 +4,7 @@ import styles from './styles.module.scss'
 import { Header } from '../../components/Header'
 import { setupAPIClient } from '../../services/api'
 import { FiRefreshCcw } from 'react-icons/fi'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import { ModalOrder } from '../../components/ModalOrder'
 
@@ -47,6 +47,20 @@ export default function Dashboard({ orders }: HomeProps) {
   const [modalItem, setModalItem] = useState<OrderItemProps[]>()
   const [modalVisible, setModalVisible] = useState(false)
 
+  const refresh = async () => {
+    const apiClient = setupAPIClient()
+    const response = await apiClient.get("/orders")
+    setOrderList(response.data)
+  }
+
+  useEffect(()=>{
+   setInterval(refresh,3000)
+  },[])
+
+  // useEffect(()=>{
+  //   setTimeout(()=>window.location.reload(),3000)
+  // },[])
+  
   const handleCloseModal = () => {
     setModalVisible(false)
   }
@@ -61,6 +75,12 @@ export default function Dashboard({ orders }: HomeProps) {
     setOrderList(response.data)
 
     setModalVisible(false)
+  }
+
+  const handleRefreshOrders = async () => {
+    const apiClient = setupAPIClient()
+    const response = await apiClient.get("/orders")
+    setOrderList(response.data)
   }
 
   const handleOpenModalView = async (id: string) => {
@@ -87,7 +107,7 @@ export default function Dashboard({ orders }: HomeProps) {
         <main className={styles.container}>
           <div className={styles.containerHeader}>
             <h1>Últimos pedidos</h1>
-            <button>
+            <button onClick={handleRefreshOrders} >
               <FiRefreshCcw size={25} color="#3FFFA3" />
             </button>
           </div>
@@ -102,7 +122,7 @@ export default function Dashboard({ orders }: HomeProps) {
               <section key={item.id} className={styles.orderItem} >
                 <button onClick={() => handleOpenModalView(item.id)}>
                   <div className={styles.tag}></div>
-                    <span >Mesa {item.table}</span>
+                  <span >Mesa {item.table}</span>
                 </button>
               </section>
             ))
